@@ -11,18 +11,18 @@ export function setKotlinMainActivity(contents: string): string {
   );
 
   // on NewIntent
-  if (contents.includes('override fun onNewIntent(intent: Intent?) {')) {
+  if (contents.includes('override fun onNewIntent(intent: Intent) {')) {
     contents = contents.replace(
       'super.onNewIntent(intent)\n',
-      'super.onNewIntent(intent)\n    intent?.let { AdyenCheckout.handleIntent(it) }\n'
+      'super.onNewIntent(intent)\n    AdyenCheckout.handleIntent(intent)\n'
     );
   } else {
     contents = contents.replace(
       /}\n$/,
       '\n' +
-        '  override fun onNewIntent(intent: Intent?) {\n' +
+        '  override fun onNewIntent(intent: Intent) {\n' +
         '    super.onNewIntent(intent)\n' +
-        '    intent?.let { AdyenCheckout.handleIntent(it) }\n' +
+        '    AdyenCheckout.handleIntent(intent)\n' +
         '  }\n' +
         '}\n'
     );
